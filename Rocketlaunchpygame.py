@@ -111,15 +111,24 @@ while running:
 
     if stage == 2:
         secondstagerect.center = (x,400)
-        for fumes in range(5):
-             pg.draw.circle(scr,white,[int(xmax/2),550+random.randint(0,50)],random.randint(1,5))
+        for fumes5 in range(500):
+            fume = abs(random.randint(0,fumes5))
+            fume2 = int(random.randint(-fume,fume)/5)
+            colorfume = random.randint(0,50)
+            pg.draw.circle(scr,(255,200+colorfume,100+colorfume*3),[400+fume2+random.randint(-18,18),600+fume],random.randint(1,int(fume/10)+5))
+        '''
+        for fumes in range(50):
+             pg.draw.circle(scr,white,[int(xmax/2),550+random.randint(0,50)],random.randint(1,3))
 
-        for fumes2 in range(30):
-            pg.draw.circle(scr,white,[int(xmax/2)+random.randint(-25,25),650+random.randint(-30,50)],random.randint(5,15))
+        for fumes2 in range(100):
+            pg.draw.circle(scr,white,[int(xmax/2)+random.randint(-15,15),650+random.randint(-30,50)],random.randint(2,4))
 
-        for fumes3 in range(30):
-            pg.draw.circle(scr,white,[int(xmax/2)+random.randint(-50,50),750+random.randint(-50,50)],random.randint(15,30))
-        
+        for fumes3 in range(100):
+            pg.draw.circle(scr,white,[int(xmax/2)+random.randint(-25,25),750+random.randint(-50,50)],random.randint(4,8))
+
+        for fumes4 in range(100):
+            pg.draw.circle(scr,white,[int(xmax/2)+random.randint(-35,35),850+random.randint(-100,100)],random.randint(6,10))
+        '''
         scr.blit(secondstage,secondstagerect)
 
     if stage == 3:
