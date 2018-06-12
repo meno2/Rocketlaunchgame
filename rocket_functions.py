@@ -35,13 +35,13 @@ def acc_vvector(v, rho, r, m, thrust, isp, dt):
     return a_v
 
 #updates x, y, v(magnitude), heading
-def flight_path(v, rho, r, m, thrust, isp, dt, heading, x, y):
+def flight_path(v, rho, r, m, thrust, isp, dt, heading, headingv, x, y):
     
     ax = acc_vvector(v, rho, r, m, thrust, isp, dt) * cos(heading)
     ay = acc_vvector(v, rho, r, m, thrust, isp, dt) * sin(heading) - 9.80655
     
-    vx = (v * cos(heading)) + ax * dt
-    vy = (v * sin(heading)) + ay * dt
+    vx = (v * cos(headingv)) + ax * dt
+    vy = (v * sin(headingv)) + ay * dt
     
     Xnew = x + vx * dt
     Ynew = y + vy * dt 
@@ -49,18 +49,18 @@ def flight_path(v, rho, r, m, thrust, isp, dt, heading, x, y):
     Vnew = sqrt((vy**2) + (vx**2))
 
     if vx < 0:
-        heading_update = atan(vy / vx)
+        headingvupd = atan(vy / vx)
 
     if vx > 0:
-        heading_update = atan(vy / vx)
+        headingvupd = atan(vy / vx)
 
     if vx == 0:
-        heading_update = 0
+        headingvupd = 0
     
     #xplt.append(Xnew)
     #yplt.append(Ynew)
-    #print(ay)
-    #print("vy:",vy,"         ",vx)
+    #print(headingv)
+    print("vy:",vy,"         ",vx)
     
-    return Xnew, Ynew, Vnew, heading_update
+    return Xnew, Ynew, Vnew, headingvupd, heading
     

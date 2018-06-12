@@ -30,7 +30,7 @@ scr = pg.display.set_mode((xmax,ymax))
 
 t = pg.time.get_ticks()*0.001
 
-
+headingvupd = 0.5*pi
 h_earth = 0         #[m]
 vel = 0              #[m/s]
 rho0 = 1.225        #[kg/m^3]
@@ -98,25 +98,22 @@ while running:
         #Basic high school physics & mathematics
         mass1 = rf.mass_acc(mass0, isp, thrust, dt)
         mass0 = mass1
-        hpos,vpos,vel,heading = rf.flight_path(vel, rho1, 5, mass1, thrust, isp, dt, heading, hpos,vpos)
-
+        
+        hpos,vpos,vel,headingvupd,heading = rf.flight_path(vel, rho1, 5, mass1, thrust, isp, dt, heading, headingvupd, hpos,vpos)
 
         #Exhaust fumes!
-        for fumes5 in range(500):        #This still needs to change with heading
+        for fumes5 in range(500):
             fume = abs(random.randint(0,fumes5))
             fume2 = int(random.randint(-fume,fume)/5)
             colorfume = random.randint(0,50)
             pg.draw.circle(scr,(255,200+colorfume,100+colorfume*3),
                            [(400+fume2+random.randint(-22,22))+int(sin(heading-pi/2)*(300+fume)),400+int(cos(heading-0.5*pi)*(300+fume))+int(random.randint(-22,22)*sin(heading-0.5*pi))],
                            random.randint(1,int(fume/10)+5))
-
-#[int(325*sin(heading-0.5*pi)+(cos(heading-0.5*pi)*(400+fume2+random.randint(-22,22)))),int(325*cos(heading-0.5*pi))+(sin(heading-0.5*pi)*(375+fume))]
-#[400+int(325*sin(heading+pi/2)*(fume2+random.randint(-22,22))),375+int(cos(heading-0.5*pi)*(325+fume))]
-
             
         #Displaying stuff
-        altitude = myfont.render(str(vpos), False, (0,0,0))
-        headingtxt = myfont.render(str(heading),False,(0,0,0))
+        altitudestr = "Altitude is",str(vpos)
+        altitude = myfont.render(str(altitudestr), False, (0,0,0))
+        headingtxt = myfont.render(str(t),False,(0,0,0))
         firststagerect.center = (x,400)
         firststagerot = pg.transform.rotate(firststage, 180/pi*(heading-0.5*pi))
         firststagerotcent = firststagerot.get_rect(center=(400,400))
@@ -125,17 +122,19 @@ while running:
         scr.blit(headingtxt, (0,20))
 
     if stage == 2:
-        secondstagerect.center = (x,400)
+        
         for fumes5 in range(500):
             fume = abs(random.randint(0,fumes5))
             fume2 = int(random.randint(-fume,fume)/5)
             colorfume = random.randint(0,50)
             pg.draw.circle(scr,(255,200+colorfume,100+colorfume*3),
-                           [(400+fume2+random.randint(-22,22))+int(sin(heading-pi/2)*(300+fume)),400+int(cos(heading-0.5*pi)*(300+fume))+int(random.randint(-22,22)*sin(heading-0.5*pi))],
-                           ,random.randint(1,int(fume/10)+5))
-        scr.blit(secondstage,secondstagerect)
+                           [(400+fume2+random.randint(-22,22))+int(sin(heading-pi/2)*(210+fume)),400+int(cos(heading-0.5*pi)*(210+fume))+int(random.randint(-22,22)*sin(heading-0.5*pi))],
+                           random.randint(1,int(fume/10)+5))
 
-#[sin(heading-0.5*pi)*(400+fume2+random.randint(-18,18)),cos(heading-0.5*pi)*(600+fume)]
+        secondstagerect.center = (x,400)
+        secondstagerot = pg.transform.rotate(secondstage, 180/pi*(heading-0.5*pi))
+        secondstagerotcent = secondstagerot.get_rect(center=(400,400))
+        scr.blit(secondstagerot,secondstagerotcent)
 
     if stage == 3:
         thirdstagerect.center = (x,400)
