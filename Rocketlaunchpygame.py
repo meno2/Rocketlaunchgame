@@ -10,7 +10,7 @@ white=(255,255,255)
 
 #Pygame text stuff
 pg.font.init()
-myfont = pg.font.SysFont('Comic Sans MS', 15)
+myfont = pg.font.SysFont('Times New Roman', 15)
 
 startliftoff = myfont.render('Press space bar to lift off!', False, (0, 0, 0))
 
@@ -31,19 +31,24 @@ scr = pg.display.set_mode((xmax,ymax))
 t = pg.time.get_ticks()*0.001
 
 headingvupd = 0.5*pi
-h_earth = 0         #[m]
-vel = 0              #[m/s]
-rho0 = 1.225        #[kg/m^3]
-mass0 = 2923387     #[kg]
+h_earth = 0            #[m]
+vel = 0                #[m/s]
+rho0 = 1.225           #[kg/m^3]
+mass1start = 2923387   #[kg]
+mass1burnout = 658801  #[kg]
+mass2start = 527306    #[kg]
+mass2burnout = 174989  #[kg]
+mass3start = 143249    #[kg]
+mass3burnout = 52563   #[kg]
+payload = 41000        #[kg]
+
+mass0 = mass1start
 
 x = 400
 
 heading = 0.5*pi 
 hpos = 0
 vpos = 0
-
-xplt = []
-yplt = []
 
 stage  = 0
 timesincekey = 0
@@ -92,13 +97,17 @@ while running:
         scr.blit(firststage,firststagerect) 
 
     if stage == 1:
-        thrust = 38257990 #N
-        isp = 304 #sec
-
-        #Basic high school physics & mathematics
+        thrust = 38257990
+        isp = 304
         mass1 = rf.mass_acc(mass0, isp, thrust, dt)
         mass0 = mass1
         
+        if mass1 > mass1burnout:
+            thrust = 38257990 #N
+        if mass1 <= mass1burnout:
+            thrust = 0
+
+        #Basic high school physics & mathematics
         hpos,vpos,vel,headingvupd,heading = rf.flight_path(vel, rho1, 5, mass1, thrust, isp, dt, heading, headingvupd, hpos,vpos)
 
         #Exhaust fumes!
@@ -111,18 +120,25 @@ while running:
                            random.randint(1,int(fume/10)+5))
             
         #Displaying stuff
-        altitudestr = "Altitude is",str(vpos)
-        altitude = myfont.render(str(altitudestr), False, (0,0,0))
-        headingtxt = myfont.render(str(t),False,(0,0,0))
+        altitudestr = ["Altitude is",str(round(vpos,1))]
+        horposstr = ["Distance traveled:",str(round(hpos,1))]
+        timestr = ["Time is",str(round(t,3))]
+        percentagetillburnout = ["Percentage of stage left:",str(round(((mass1-mass1burnout)/(mass1start-mass1burnout)*100),3))]
+        altitude = myfont.render(str(altitudestr), False, white)
+        timetxt = myfont.render(str(timestr),False,white)
+        horpostxt = myfont.render(str(horposstr),False,white)
+        perctxt = myfont.render(str(percentagetillburnout),False,white)
         firststagerect.center = (x,400)
         firststagerot = pg.transform.rotate(firststage, 180/pi*(heading-0.5*pi))
         firststagerotcent = firststagerot.get_rect(center=(400,400))
         scr.blit(firststagerot,firststagerotcent)
         scr.blit(altitude, (0,0))
-        scr.blit(headingtxt, (0,20))
-
-    if stage == 2:
+        scr.blit(horpostxt, (0,20))
+        scr.blit(timetxt, (0,40))
+        scr.blit(perctxt,(0,60))
         
+        
+    if stage == 2:
         for fumes5 in range(500):
             fume = abs(random.randint(0,fumes5))
             fume2 = int(random.randint(-fume,fume)/5)
