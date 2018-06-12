@@ -35,13 +35,13 @@ def acc_vvector(v, rho, r, m, thrust, isp, dt):
     return a_v
 
 #updates x, y, v(magnitude), heading
-def flight_path(v, rho, r, m, thrust, isp, dt, heading, x, y):
+def flight_path(vxor,vyor, rho, r, m, thrust, isp, dt, heading, x, y):
     
-    ax = acc_vvector(v, rho, r, m, thrust, isp, dt) * cos(heading)
-    ay = acc_vvector(v, rho, r, m, thrust, isp, dt) * sin(heading) - 9.80655
+    ax = acc_vvector(vxor, rho, r, m, thrust, isp, dt)
+    ay = acc_vvector(vyor, rho, r, m, thrust, isp, dt) - 9.80655
     
-    vx = (v * cos(heading)) + ax * dt
-    vy = (v * sin(heading)) + ay * dt
+    vx = vxor + ax * dt
+    vy = vyor + ay * dt
     
     Xnew = x + vx * dt
     Ynew = y + vy * dt 
@@ -62,5 +62,5 @@ def flight_path(v, rho, r, m, thrust, isp, dt, heading, x, y):
 
     print("vy:",vy,"         ",vx)
     
-    return Xnew, Ynew, Vnew, heading_update
+    return Xnew, Ynew, vx, vy, heading_update
     
