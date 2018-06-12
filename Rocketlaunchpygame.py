@@ -100,12 +100,21 @@ while running:
         mass0 = mass1
         hpos,vpos,vel,heading = rf.flight_path(vel, rho1, 5, mass1, thrust, isp, dt, heading, hpos,vpos)
 
+
+        #Exhaust fumes!
+        for fumes5 in range(500):        #This still needs to change with heading
+            fume = abs(random.randint(0,fumes5))
+            fume2 = int(random.randint(-fume,fume)/5)
+            colorfume = random.randint(0,50)
+            pg.draw.circle(scr,(255,200+colorfume,100+colorfume*3),[400+fume2+random.randint(-22,22),700+fume],random.randint(1,int(fume/10)+5))
+
         #Displaying stuff
         altitude = myfont.render(str(vpos), False, (0,0,0))
         headingtxt = myfont.render(str(heading),False,(0,0,0))
         firststagerect.center = (x,400)
         firststagerot = pg.transform.rotate(firststage, 180/pi*(heading-0.5*pi))
-        scr.blit(firststagerot,firststagerect)
+        firststagerotcent = firststagerot.get_rect(center=(400,400))
+        scr.blit(firststagerot,firststagerotcent)
         scr.blit(altitude, (0,0))
         scr.blit(headingtxt, (0,20))
 
@@ -116,19 +125,6 @@ while running:
             fume2 = int(random.randint(-fume,fume)/5)
             colorfume = random.randint(0,50)
             pg.draw.circle(scr,(255,200+colorfume,100+colorfume*3),[400+fume2+random.randint(-18,18),600+fume],random.randint(1,int(fume/10)+5))
-        '''
-        for fumes in range(50):
-             pg.draw.circle(scr,white,[int(xmax/2),550+random.randint(0,50)],random.randint(1,3))
-
-        for fumes2 in range(100):
-            pg.draw.circle(scr,white,[int(xmax/2)+random.randint(-15,15),650+random.randint(-30,50)],random.randint(2,4))
-
-        for fumes3 in range(100):
-            pg.draw.circle(scr,white,[int(xmax/2)+random.randint(-25,25),750+random.randint(-50,50)],random.randint(4,8))
-
-        for fumes4 in range(100):
-            pg.draw.circle(scr,white,[int(xmax/2)+random.randint(-35,35),850+random.randint(-100,100)],random.randint(6,10))
-        '''
         scr.blit(secondstage,secondstagerect)
 
     if stage == 3:
