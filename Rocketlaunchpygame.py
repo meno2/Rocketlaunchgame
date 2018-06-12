@@ -107,11 +107,13 @@ while running:
             fume2 = int(random.randint(-fume,fume)/5)
             colorfume = random.randint(0,50)
             pg.draw.circle(scr,(255,200+colorfume,100+colorfume*3),
-                           [400-int(sin(heading-0.5*pi)*(fume2+random.randint(-22,22)+400)),375+int(cos(heading-0.5*pi)*(325+fume))],
+                           [(400+fume2+random.randint(-22,22))+int(sin(heading-pi/2)*(300+fume)),400+int(cos(heading-0.5*pi)*(300+fume))+int(random.randint(-22,22)*sin(heading-0.5*pi))],
                            random.randint(1,int(fume/10)+5))
 
 #[int(325*sin(heading-0.5*pi)+(cos(heading-0.5*pi)*(400+fume2+random.randint(-22,22)))),int(325*cos(heading-0.5*pi))+(sin(heading-0.5*pi)*(375+fume))]
-#[400+int(325*sin(heading+pi/2)*(fume2+random.randint(-22,22))),375+int(cos(heading-0.5*pi)*(325+fume))]       
+#[400+int(325*sin(heading+pi/2)*(fume2+random.randint(-22,22))),375+int(cos(heading-0.5*pi)*(325+fume))]
+
+            
         #Displaying stuff
         altitude = myfont.render(str(vpos), False, (0,0,0))
         headingtxt = myfont.render(str(heading),False,(0,0,0))
@@ -128,8 +130,12 @@ while running:
             fume = abs(random.randint(0,fumes5))
             fume2 = int(random.randint(-fume,fume)/5)
             colorfume = random.randint(0,50)
-            pg.draw.circle(scr,(255,200+colorfume,100+colorfume*3),[sin(heading-0.5*pi)*(400+fume2+random.randint(-18,18)),cos(heading-0.5*pi)*(600+fume)],random.randint(1,int(fume/10)+5))
+            pg.draw.circle(scr,(255,200+colorfume,100+colorfume*3),
+                           [(400+fume2+random.randint(-22,22))+int(sin(heading-pi/2)*(300+fume)),400+int(cos(heading-0.5*pi)*(300+fume))+int(random.randint(-22,22)*sin(heading-0.5*pi))],
+                           ,random.randint(1,int(fume/10)+5))
         scr.blit(secondstage,secondstagerect)
+
+#[sin(heading-0.5*pi)*(400+fume2+random.randint(-18,18)),cos(heading-0.5*pi)*(600+fume)]
 
     if stage == 3:
         thirdstagerect.center = (x,400)
