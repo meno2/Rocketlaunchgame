@@ -59,7 +59,7 @@ def flight_path(v, rho, r, m, thrust, isp, dt, heading, x, y):
     
     #xplt.append(Xnew)
     #yplt.append(Ynew)
-    print(ay)
+    #print(ay)
     #print("vy:",vy,"         ",vx)
     
     return Xnew, Ynew, Vnew, heading_update
