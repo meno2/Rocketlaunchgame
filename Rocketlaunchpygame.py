@@ -30,8 +30,6 @@ secondstagerect = secondstage.get_rect()
 thirdstagerect = thirdstage.get_rect()
 laststagerect = laststage.get_rect()
 
-
-
 xmax = 800
 ymax = 800
 scr = pg.display.set_mode((xmax,ymax))
@@ -332,8 +330,9 @@ while running:
                 scr.blit(spacebartxt,(190,360))
 
                 if keys[pg.K_SPACE]:
-                    lstminimum = highscores.index(min(highscores))
-                    highscores[lstminimum] = hpos
+                    if hpos > min(highscores):
+                        lstminimum = highscores.index(min(highscores))
+                        highscores[lstminimum] = hpos
                     game = False
     #The menu
     if game == False:
