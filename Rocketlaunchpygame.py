@@ -58,7 +58,7 @@ x = 400
 heading = 0.5*pi 
 hpos = 0
 vpos = 55
-
+timespd = 1
 stage  = 0
 timesincekey = 0
 timesincekey2 = 0
@@ -86,15 +86,31 @@ while running:
         scr.fill(background)
 
         time0 = pg.time.get_ticks()*0.001
-
+        if keys[pg.K_1]:
+            timespd = 1
+        if keys[pg.K_2]:
+            timespd = 2
+        if keys[pg.K_3]:
+            timespd = 3
+        if keys[pg.K_4]:
+            timespd = 4
+        if keys[pg.K_5]:
+            timespd = 5
+        if keys[pg.K_6]:
+            timespd = 6
+        if keys[pg.K_7]:
+            timespd = 7
+        if keys[pg.K_8]:
+            timespd = 8
+    
         if vpos > 0:
             t0 = t
             t = pg.time.get_ticks()*0.001
-            dt = t- t0
+            dt = timespd*(t- t0)
             if dt == 0:
                 dt = 0.001
             
-            timesincekey = timesincekey + dt
+            timesincekey = timesincekey + dt/timespd
 
             if keys[pg.K_LEFT]:
                 heading  = heading + 0.5*dt
@@ -310,13 +326,14 @@ while running:
 
         scr.blit((headerfont.render("Your best scores: [m]",False,white)),(280,430))
 
-        scr.blit((myfont.render("To control: press spacebar for stage seperation and launch,",False,white)),(250,700))
-        scr.blit((myfont.render("right and left arrow keys to tilt (the rocket only flies towards the right)", False,white)),(220,720))
+        scr.blit((myfont.render("To control: press spacebar for stage seperation and launch,",False,white)),(230,680))
+        scr.blit((myfont.render("right and left arrow keys to tilt (the rocket only flies towards the right)", False,white)),(200,700))
+        scr.blit((myfont.render("keys 1-8 speed up the time by 1-8x", False,white)),(300,720))
 
-        scr.blit((myfont.render("Made by: Menno Berger & Guy Maré",False,white)),(310,760))
+        scr.blit((myfont.render("Made by: Menno Berger & Guy Maré",False,white)),(290,760))
         
         for i in range (5):
-            scr.blit((headerfont.render(str(round(highscores[i],1)),False, white)),(380,465+30*i))
+            scr.blit((headerfont.render(str(round(highscores[i],1)),False, white)),(385,465+30*i))
             
         
         if keys[pg.K_SPACE] and timesincekey2 > 0.3:
