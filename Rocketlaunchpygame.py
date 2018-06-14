@@ -4,6 +4,9 @@ import rocket_functions as rf
 import random
 from math import *
 
+#Created by Guy Maré and Menno Berger
+
+
 pg.init()
 black =(0,0,0)
 white=(255,255,255)
@@ -36,9 +39,11 @@ scr = pg.display.set_mode((xmax,ymax))
 t = pg.time.get_ticks()*0.001
 time2 = pg.time.get_ticks()*0.001
 
-highscores = [0,0,0,0,0]
 
-headingvupd = 0.5*pi
+
+
+
+#Constants
 h_earth = 0            #[m]
 vel = 0                #[m/s]
 rho0 = 1.225           #[kg/m^3]
@@ -55,6 +60,9 @@ mass2 = mass2start
 mass4 = mass3start
 x = 400
 
+#Setting up time and stuff
+highscores = [0,0,0,0,0]
+headingvupd = 0.5*pi
 heading = 0.5*pi 
 hpos = 0
 vpos = 55
@@ -65,10 +73,10 @@ timesincekey2 = 0
 time0 = 0
 game = False
 running =  True
+
+
 while running:
     pg.event.pump()
-
-
     
     #Now the actual functions:
     rho1 = isa.ISA(vpos)
@@ -89,6 +97,8 @@ while running:
         scr.fill(background)
 
         time0 = pg.time.get_ticks()*0.001
+        
+        #Speeding up time:
         if keys[pg.K_1]:
             timespd = 1
         if keys[pg.K_2]:
@@ -115,6 +125,7 @@ while running:
             
             timesincekey = timesincekey + dt/timespd
 
+            #Key controls:
             if keys[pg.K_LEFT]:
                 heading  = heading + 0.5*dt
                 if heading > 0.5*pi:
@@ -126,7 +137,9 @@ while running:
             if keys[pg.K_SPACE] and timesincekey > 0.3:
                 stage = stage + 1
                 timesincekey = 0
-            
+
+
+            #Launch phase
             if stage == 0:
                 firststagerect.center = (x,400)
                 scr.blit(startliftoff,(0,0))
@@ -135,6 +148,7 @@ while running:
                 ground = pg.Rect(0,410+int(vpos*729/110),900,1000) 
                 pg.draw.rect(scr,(94, 237, 0),ground)
                 
+            #Full rocket
             if stage == 1:
                 thrust = 38257990
                 isp = 280
@@ -177,6 +191,8 @@ while running:
                 scr.blit(perctxt,(0,40))
                 #-------
 
+
+            #Stage 2
             if stage == 2:
                 thrust = 4446648
                 isp = 420
@@ -217,7 +233,7 @@ while running:
                 scr.blit(perctxt,(0,40))
                 #-------
 
-                
+            #Stage 3
             if stage == 3:
                 thrust = 889325
                 isp = 420
@@ -231,6 +247,8 @@ while running:
 
                 #Basic high school physics & mathematics
                 hpos,vpos,vel,headingvupd,heading = rf.flight_path(vel, rho1, 5, mass1, thrust, isp, dt, heading, headingvupd, hpos,vpos)
+
+                #Exhaust fumes
                 if thrust > 0:
                     for fumes5 in range(500):
                         fume = abs(random.randint(0,fumes5))
@@ -245,7 +263,6 @@ while running:
                 thirdstagerotcent = thirdstagerot.get_rect(center=(400,400))
                 scr.blit(thirdstagerot,thirdstagerotcent)
 
-
                 #Percentage till burnout display
                 percentagetillburnout = ["Percentage of stage left:",str(round(((mass1-mass3burnout)/(mass3start-mass3burnout)*100),3))]
 
@@ -257,6 +274,7 @@ while running:
                 scr.blit(perctxt,(0,40))
                 #-------
 
+            #Last stage
             if stage > 3:
                 hpos,vpos,vel,headingvupd,heading = rf.flight_path(vel, rho1, 5, payload, 0, 1, dt, heading, headingvupd, hpos,vpos)
                 laststagerect.center = (x,400)
@@ -264,7 +282,7 @@ while running:
                 laststagerotcent = laststagerot.get_rect(center=(400,400))
                 scr.blit(laststagerot,laststagerotcent)
                   
-                #Displaying stuff
+            #On Screen displays
             if stage > 0:
                 altitudestr = ["Altitude is",str(round(vpos,1))]
                 horposstr = ["Distance traveled:",str(round(hpos,1))]
@@ -283,6 +301,8 @@ while running:
                 ground = pg.Rect(0,410+int(vpos*729/110),900,500) 
                 pg.draw.rect(scr,(94, 237, 0),ground)
 
+
+        #Game over (rocket hits the earth)
         if vpos <= 0:
                 vpos = 0
                 altitudestr = ["Altitude is",str(round(vpos,1))]
@@ -315,7 +335,7 @@ while running:
                     lstminimum = highscores.index(min(highscores))
                     highscores[lstminimum] = hpos
                     game = False
-
+    #The menu
     if game == False:
         timesincekey2 = 0
         time2 = pg.time.get_ticks()*0.001
@@ -327,7 +347,7 @@ while running:
         scr.blit((largerheaderfont.render("Launching the Apollo 11 rocket from ",False,white)),(110,50))
         scr.blit((largerheaderfont.render("scientificcaly accurate flat earth ",False,white)),(140,90))
 
-        scr.blit((headerfont.render("The 'real' Apollo 11 mission: [m]",False,white)),(200,280))
+        scr.blit((headerfont.render("The 'real' Apollo 11 mission's distance covered: [m]",False,white)),(100,280))
         scr.blit((headerfont.render("1,534,832,036",False,white)),(300,320))
 
         scr.blit((headerfont.render("Your best scores: [m]",False,white)),(280,430))
@@ -341,7 +361,7 @@ while running:
         for i in range (5):
             scr.blit((headerfont.render(str(round(highscores[i],1)),False, white)),(385,465+30*i))
             
-        
+       #Getting back into the game 
         if keys[pg.K_SPACE] and timesincekey2 > 0.3:
                 game = True
                 headingvupd = 0.5*pi

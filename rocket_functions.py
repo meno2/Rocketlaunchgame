@@ -3,7 +3,7 @@
 """
 Created on Fri Jun  8 10:17:47 2018
 
-@author: guymare
+@author: Guy Maré and Menno Berger
 """
 from math import*
 
