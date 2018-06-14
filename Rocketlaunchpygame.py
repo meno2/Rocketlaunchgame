@@ -72,6 +72,9 @@ while running:
     
     #Now the actual functions:
     rho1 = isa.ISA(vpos)
+    if rho1 > 1.225:
+        rho1 = 1.225
+    
     bluecol = int(rho1/rho0 * 255)
     redcol = int(bluecol/5)
     greencol = int(bluecol/1.4)
@@ -129,7 +132,7 @@ while running:
                 scr.blit(startliftoff,(0,0))
                 scr.blit(firststage,firststagerect) 
                 scr.blit(launchpad, (180,50))
-                ground = pg.Rect(0,410+int(vpos*729/110),900,500) 
+                ground = pg.Rect(0,410+int(vpos*729/110),900,1000) 
                 pg.draw.rect(scr,(94, 237, 0),ground)
                 
             if stage == 1:
@@ -269,6 +272,9 @@ while running:
                 altitude = myfont.render(str(altitudestr), False, white)
                 timetxt = myfont.render(str(timestr),False,white)
                 horpostxt = myfont.render(str(horposstr),False,white)
+                scr.blit(myfont.render("Time progression:",False,white),(680,20))
+                scr.blit(headerfont.render(str(timespd),False,white),(730,35))
+                scr.blit(headerfont.render("x",False,white),(750,35))
                 scr.blit(altitude, (0,0))
                 scr.blit(horpostxt, (0,20))
                 #scr.blit(timetxt, (0,40))
@@ -278,6 +284,7 @@ while running:
                 pg.draw.rect(scr,(94, 237, 0),ground)
 
         if vpos <= 0:
+                vpos = 0
                 altitudestr = ["Altitude is",str(round(vpos,1))]
                 horposstr = ["Distance traveled:",str(round(hpos,1))]
                 timestr = ["Time is",str(round(t,3))]
@@ -287,14 +294,13 @@ while running:
                 gameovertxt = headerfont.render(str("GAME OVER! Your traveled distance was:"),False, white)
                 yourdisttxt = headerfont.render(str(round(hpos,1)),False,white)
                 spacebartxt = headerfont.render("Press spacebar to go back to menu",False,white)
-
                 scr.blit(altitude, (0,0))
                 scr.blit(horpostxt, (0,20))
                 #scr.blit(timetxt, (0,40))
                 scr.blit(launchpad, (180-int(hpos*729/110),-314+int(vpos*729/110)))
 
                 #ground & spacecraft display
-                ground = pg.Rect(0,410+int(vpos*729/110),900,500) 
+                ground = pg.Rect(0,410+int(vpos*729/110),900,1000) 
                 pg.draw.rect(scr,(94, 237, 0),ground)
                 laststagerect.center = (x,400)
                 laststagerot = pg.transform.rotate(laststage, 180/pi*(heading-0.5*pi))
